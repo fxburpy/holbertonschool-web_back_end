@@ -18,13 +18,9 @@ async def measure_runtime() -> float:
     """
     start_time = time.perf_counter()
 
-    # 4 adet görevi eşzamanlı (paralel) olarak başlatıyoruz
-    await asyncio.gather(
-        async_comprehension(),
-        async_comprehension(),
-        async_comprehension(),
-        async_comprehension()
-    )
+    # 4 görevi bir liste içinde oluşturup * operatörü ile unpack ediyoruz
+    tasks = [async_comprehension() for _ in range(4)]
+    await asyncio.gather(*tasks)
 
     end_time = time.perf_counter()
     return end_time - start_time
